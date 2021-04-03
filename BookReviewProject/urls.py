@@ -24,5 +24,7 @@ urlpatterns = [
     # views is the .py file.
     # index is the function
     path('books/', books.views.index),
-    path('publishers/', books.views.show_publishers)
+    path('publishers/', books.views.show_publishers),
+    path('authors/', books.views.show_authors),
+    path('books/create', books.views.create_book)
 ]
