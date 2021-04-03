@@ -17,6 +17,7 @@ class Book(models.Model):
     # TextField is the TEXT in MySQL
     desc = models.TextField(blank=False)
 
+    # toString function to represent model as a string
     def __str__(self):
         return self.title
 
@@ -24,7 +25,7 @@ class Book(models.Model):
 class Publisher(models.Model):
     # what are the columns for Publisher table?
     name = models.CharField(blank=False, max_length=255)
-    email = models.CharField(blank=False, max_length=255)
+    email = models.EmailField(blank=False, max_length=320)
 
     def __str__(self):
         return self.name

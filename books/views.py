@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from .models import Book, Publisher, Author
-from .forms import BookForm, AuthorForm
+from .forms import BookForm, AuthorForm, PublisherForm
 
 # Create your views here.
 
@@ -74,3 +74,18 @@ def create_author(request):
     return render(request, 'books/create_author.template.html', {
         'form': create_author_form
     })
+
+
+def create_publisher(request):
+    if request.method == 'POST':
+        create_publisher_form = PublisherForm(request.POST)
+        if create_publisher_form.is_valid():
+            create_publisher_form.save()
+            return HttpResponse("New publisher Created")
+        else:
+            return HttpResponse("Form not valid")
+    else:
+        form = PublisherForm()
+        return render(request, 'books/create_publisher.template.html', {
+            'form': form
+        })
