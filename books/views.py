@@ -7,11 +7,11 @@ from .forms import BookForm, AuthorForm, PublisherForm
 # define a view function
 
 
-def show_books(request):
+def show_book(request):
     # create a query set that has all the books
     # a query set is like a cursor
     books = Book.objects.all()
-    return render(request, 'books/show-books.template.html', {
+    return render(request, 'books/show-book.template.html', {
         'books': books
     })
 
@@ -23,7 +23,7 @@ def create_book(request):
         # check if the form has valid values
         if create_book_form.is_valid():
             create_book_form.save()
-            return redirect(reverse(show_books))
+            return redirect(reverse(show_book))
         else:
             # if does not have valid values, re-render the form
             return render(request, 'books/create_book.template.html', {
@@ -44,7 +44,7 @@ def update_book(request, book_id):
         update_form = BookForm(request.POST, instance=book_being_updated)
         if update_form.is_valid():
             update_form.save()
-            return redirect(reverse(show_books))
+            return redirect(reverse(show_book))
         else:
             return render(request, 'books/update-book.template.html', {
                 'book_form': update_form,
@@ -63,6 +63,14 @@ def update_book(request, book_id):
             'book_form': book_form,
             'book_title': book_title
         })
+
+
+def delete_book(request, book_id):
+    book_to_delete = get_object_or_404(Book, pk=book_id)
+
+    return render(request, 'books/delete-book.template.html', {
+        'book_to_delete': book_to_delete,
+    })
 
 
 def show_publishers(request):
@@ -103,7 +111,7 @@ def create_author(request):
         # check if the form has valid values
         if create_author_form.is_valid():
             create_author_form.save()
-            return redirect(reverse(index))
+            return redirect(reverse(show_book))
         else:
             # if does not have valid values, re-render the form
             return render(request, 'books/create_author.template.html', {
