@@ -15,12 +15,40 @@
 </head>
 
 <body>
-    <h1>Welcome to our Bookshop</h1>
-    <ul>
-        {%for book in books %}
-        <li>{{book.title}}</li>
-        {%endfor%}
-    </ul>
+    <div class="container">
+        <h1>Welcome to our Bookshop</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        ISBN
+                    </th>
+                    <th>
+                        desc
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for book in books %}
+                <tr>
+                    <td>{{book.title}}</td>
+                    <td>{{book.ISBN}}</td>
+                    <td>{{book.desc}}</td>
+                    <td>
+                        <a href="{% url 'update_book' book_id=book.id %}" class="btn btn-primary btn-sm">Update</a>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
 
     <!-- Optional JavaScript; choose one of the two! -->
 

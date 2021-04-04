@@ -37,17 +37,32 @@ def create_book(request):
 
 
 def update_book(request, book_id):
-    # 1. Retrieve publisher to update from DB
-    book_to_update = get_object_or_404(Book, pk=book_id)
-    # 2. create form and initialise its fields with the publisher data from #1
-    book_title = book_to_update.title
-    book_form = BookForm(instance=book_to_update)
+    # Check if form is submitted
+    if request.method == 'POST':
+        book_being_updated = get_object_or_404(Book, pk=book_id)
+        book_being_update_title = book_being_updated.title
+        update_form = BookForm(request.POST, instance=book_being_updated)
+        if update_form.is_valid():
+            update_form.save()
+            return redirect(reverse(show_books))
+        else:
+            return render(request, 'books/update-book.template.html', {
+                'book_form': update_form,
+                'book_title': book_being_update_title
+            })
+    else:
+        # all i want is to display
+        # 1. Retrieve publisher to update from DB
+        book_to_update = get_object_or_404(Book, pk=book_id)
+        # 2. create form and initialise its fields with the book data
+        book_title = book_to_update.title
+        book_form = BookForm(instance=book_to_update)
 
-    # render the form
-    return render(request, 'books/update-book.template.html', {
-        'book_form': book_form,
-        'book_title': book_title
-    })
+        # render the form
+        return render(request, 'books/update-book.template.html', {
+            'book_form': book_form,
+            'book_title': book_title
+        })
 
 
 def show_publishers(request):
@@ -55,6 +70,21 @@ def show_publishers(request):
     return render(request, 'books/show_publishers.template.html', {
         'all_publishers': all_publishers
     })
+
+
+def create_publisher(request):
+    if request.method == 'POST':
+        create_publisher_form = PublisherForm(request.POST)
+        if create_publisher_form.is_valid():
+            create_publisher_form.save()
+            return HttpResponse("New publisher Created")
+        else:
+            return HttpResponse("Form not valid")
+    else:
+        form = PublisherForm()
+        return render(request, 'books/create_publisher.template.html', {
+            'form': form
+        })
 
 
 def show_authors(request):
@@ -88,18 +118,3 @@ def create_author(request):
     return render(request, 'books/create_author.template.html', {
         'form': create_author_form
     })
-
-
-def create_publisher(request):
-    if request.method == 'POST':
-        create_publisher_form = PublisherForm(request.POST)
-        if create_publisher_form.is_valid():
-            create_publisher_form.save()
-            return HttpResponse("New publisher Created")
-        else:
-            return HttpResponse("Form not valid")
-    else:
-        form = PublisherForm()
-        return render(request, 'books/create_publisher.template.html', {
-            'form': form
-        })
