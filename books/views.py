@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect, reverse
+from django.shortcuts import render, HttpResponse, redirect, reverse, get_object_or_404
 from .models import Book, Publisher, Author
 from .forms import BookForm, AuthorForm, PublisherForm
 
@@ -7,12 +7,46 @@ from .forms import BookForm, AuthorForm, PublisherForm
 # define a view function
 
 
-def index(request):
+def show_books(request):
     # create a query set that has all the books
     # a query set is like a cursor
     books = Book.objects.all()
-    return render(request, 'books/index-template.html', {
+    return render(request, 'books/show-books.template.html', {
         'books': books
+    })
+
+
+def create_book(request):
+    if request.method == 'POST':
+        create_book_form = BookForm(request.POST)
+
+        # check if the form has valid values
+        if create_book_form.is_valid():
+            create_book_form.save()
+            return redirect(reverse(show_books))
+        else:
+            # if does not have valid values, re-render the form
+            return render(request, 'books/create_book.template.html', {
+                'form': create_book_form
+            })
+    else:
+        create_book_form = BookForm()
+        return render(request, 'books/create_book.template.html', {
+            'form': create_book_form
+        })
+
+
+def update_book(request, book_id):
+    # 1. Retrieve publisher to update from DB
+    book_to_update = get_object_or_404(Book, pk=book_id)
+    # 2. create form and initialise its fields with the publisher data from #1
+    book_title = book_to_update.title
+    book_form = BookForm(instance=book_to_update)
+
+    # render the form
+    return render(request, 'books/update-book.template.html', {
+        'book_form': book_form,
+        'book_title': book_title
     })
 
 
@@ -28,26 +62,6 @@ def show_authors(request):
     return render(request, 'books/show_authors.template.html', {
         'all_authors': all_authors
     })
-
-
-def create_book(request):
-    if request.method == 'POST':
-        create_book_form = BookForm(request.POST)
-
-        # check if the form has valid values
-        if create_book_form.is_valid():
-            create_book_form.save()
-            return redirect(reverse(index))
-        else:
-            # if does not have valid values, re-render the form
-            return render(request, 'books/create_book.template.html', {
-                'form': create_book_form
-            })
-    else:
-        create_book_form = BookForm()
-        return render(request, 'books/create_book.template.html', {
-            'form': create_book_form
-        })
 
 
 def create_author(request):
@@ -88,4 +102,4 @@ def create_publisher(request):
         form = PublisherForm()
         return render(request, 'books/create_publisher.template.html', {
             'form': form
-        })ll
+        })

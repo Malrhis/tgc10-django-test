@@ -23,10 +23,11 @@ urlpatterns = [
     # books is the folder.
     # views is the .py file.
     # index is the function
-    path('books/', books.views.index),
+    path('books/', books.views.show_books),
     path('publishers/', books.views.show_publishers),
     path('authors/', books.views.show_authors),
     path('books/create', books.views.create_book),
+    path('books/update/<book_id>', books.views.update_book),
     path('authors/create', books.views.create_author),
     path('publishers/create', books.views.create_publisher),
 ]
