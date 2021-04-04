@@ -66,11 +66,15 @@ def update_book(request, book_id):
 
 
 def delete_book(request, book_id):
-    book_to_delete = get_object_or_404(Book, pk=book_id)
-
-    return render(request, 'books/delete-book.template.html', {
-        'book_to_delete': book_to_delete,
-    })
+    if request.method == "POST":
+        book_to_delete = get_object_or_404(Book, pk=book_id)
+        book_to_delete.delete()
+        return redirect(reverse(show_book))
+    else:
+        book_to_delete = get_object_or_404(Book, pk=book_id)
+        return render(request, 'books/delete-book.template.html', {
+            'book_to_delete': book_to_delete,
+        })
 
 
 def show_publishers(request):

@@ -42,6 +42,7 @@
                     <td>{{book.desc}}</td>
                     <td>
                         <a href="{% url 'update_book' book_id=book.id %}" class="btn btn-primary btn-sm">Update</a>
+                        <a href="{% url 'delete_book' book_id=book.id %}" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
                 {%endfor%}
