@@ -7,6 +7,8 @@ from django.db import models
 # class is a generic entity.
 
 # Put Genre before the Book, so that Book Model can refer to Genre
+
+
 class Genre(models.Model):
     title = models.CharField(blank=False, max_length=255)
 
