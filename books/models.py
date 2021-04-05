@@ -6,6 +6,13 @@ from django.db import models
 
 # class is a generic entity.
 
+# Put Genre before the Book, so that Book Model can refer to Genre
+class Genre(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
+
 
 class Book(models.Model):
     # Create "columns" in class in models.py
@@ -16,6 +23,9 @@ class Book(models.Model):
 
     # TextField is the TEXT in MySQL
     desc = models.TextField(blank=False)
+
+    # Define relationship with class == Genre
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
 
     # toString function to represent model as a string
     def __str__(self):
