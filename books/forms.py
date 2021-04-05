@@ -1,11 +1,11 @@
 from django import forms
-from .models import Book, Author, Publisher, Genre
+from .models import Book, Author, Publisher
 
 
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ('title', 'desc', 'ISBN', 'genre')
+        fields = ('title', 'desc', 'ISBN', 'genre', 'tags')
 
 
 class AuthorForm(forms.ModelForm):

@@ -26,8 +26,11 @@ class Book(models.Model):
     # TextField is the TEXT in MySQL
     desc = models.TextField(blank=False)
 
-    # Define relationship with class == Genre
+    # Define relationship with class == Genre. One to Many
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+
+    # Define relationship with class == Tag. Many to Many
+    tags = models.ManyToManyField('Tag')
 
     # toString function to represent model as a string
     def __str__(self):
@@ -50,3 +53,10 @@ class Author(models.Model):
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+
+class Tag(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
