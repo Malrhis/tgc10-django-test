@@ -29,8 +29,14 @@ class Book(models.Model):
     # Define relationship with class == Genre. One to Many
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
 
+    # Define relationship with class == Publish. One to Many
+    publisher = models.ForeignKey('Publisher', on_delete=models.CASCADE)
+
     # Define relationship with class == Tag. Many to Many
     tags = models.ManyToManyField('Tag')
+
+    # Define relationship with class == Author Many to Many
+    authors = models.ManyToManyField('Author')
 
     # toString function to represent model as a string
     def __str__(self):
